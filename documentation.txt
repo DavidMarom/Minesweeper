@@ -1,0 +1,29 @@
+DATA STRUCTURE
+===============
+
+var cell = {
+    ----
+    minesAroundCount: 4,
+    isShown: true,
+    isMine: false,
+    isMarked: true
+}
+
+
+gBoard:  (2D array of cell objects)
+-------
+[cell, cell, cell],
+[cell, cell, cell]
+
+
+DOM
+===
+
+<table>
+    <tr>
+        <td class="cell" onClicked="cellClicked(this,i,j)">
+                [emoji symbol]
+        </td>
+
+    </tr>
+</table>

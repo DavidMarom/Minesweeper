@@ -1,0 +1,45 @@
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+    background-color: darkgrey;
+    cursor: pointer;
+    text-align: center;
+}
+
+.uncovered {
+    background-color: rgb(204, 204, 204) !important;
+}
+
+.board {
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+}
+
+.container {
+    width: 640px;
+    /*can be in percentage also.*/
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+}
+
+.hintBar {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+}
+
+.hint {
+    background-color: darkgray;
+    width: 20px;
+    display: inline;
+}
+
+.hint1 {}
