@@ -20,8 +20,10 @@
     <link rel="stylesheet" type="text/css" href="CSS/main.css">
 </head>
 
-<body onload="initGame(7)">
+<body onload="initGame(4)">
     <div class="container disable-select">
+
+        <div class="timer">0:00</div>
         <div class="smiley">
             😃
 
@@ -35,10 +37,13 @@
             <div class="hint hint2" onclick="showHint(this)">💡</div>
             <div class="hint hint3" onclick="showHint(this)">💡</div>
         </div>
-        <div class="statusBar">
+        <div class="statusBar"></div>
 
+        <div class="newGameBar"></div>
+        <div class="new-game new-game-btn new4" onclick="initGame(4)">4X4</div>
+        <div class="new-game new-game-btn new8" onclick="initGame(8)">8X8</div>
+        <div class="new-game new-game-btn new12" onclick="initGame(12)">12X12</div>
 
-        </div>
     </div>
 
     <script src="JS/utils.js"></script>

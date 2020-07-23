@@ -47,7 +47,6 @@ table {
     cursor: pointer;
     font-size: 15pt;
     text-align: center;
-
 }
 
 .hint {
@@ -55,27 +54,30 @@ table {
     display: inline;
     padding-right: 2px;
     padding-left: 2px;
-
 }
 
 .hint1 {}
 
-
-
 .disable-select {
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none;   /* Chrome/Safari/Opera */
-    -khtml-user-select: none;    /* Konqueror */
-    -moz-user-select: none;      /* Firefox */
-    -ms-user-select: none;       /* Internet Explorer/Edge */
-    user-select: none;           /* Non-prefixed version, currently supported by any browser but < IE9 */
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Chrome/Safari/Opera */
+    -khtml-user-select: none;
+    /* Konqueror */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently supported by any browser but < IE9 */
 }
 
 .hide {
     visibility: collapse;
 }
 
-.mark{
+.mark {
     background-color: deeppink;
 }
 
@@ -86,5 +88,33 @@ table {
     cursor: pointer;
     text-align: center;
     font-size: 40pt;
-padding: 10px;
+    padding: 10px;
+}
+
+.new-game {
+    width: 30px;
+    display: inline;
+    padding-right: 2px;
+    padding-left: 2px;
+    margin: 10px;
+
+}
+
+.new-game-btn {
+    width: 30px;
+    display: inline;
+    background-color: #ddeeff;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 3px;
+    margin: 10px;
+
+}
+
+.statusBar {
+    padding: 10px;
+    background-color: azure;
+    margin: 10px;
 }
