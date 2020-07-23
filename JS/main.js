@@ -11,7 +11,8 @@ var gSmileyIndicator;
 var gFlags = 0; // total flags on map - not necessarily correct
 var gFlaggedMines = 0; // total currect flags
 var gTimer;
-
+var gOpenCell;
+var gEmpty;
 
 
 //var cell = {  ===>  Example
@@ -50,6 +51,11 @@ function initGame(size) {
     gUsedHint = 0;
     gLevel.LIVES = 3;
     clearInterval(gTimer);
+
+    //gOpenCell = 0;
+    //gEmpty = (gLevel.SIZE*gLevel.SIZE) - gLevel.MINES  ;
+    //console.log('gEmpty: ', gEmpty);
+    document.querySelector('.hintBar').classList.add("hide");
 
     document.querySelector('.hint1').classList.remove('hide');
     document.querySelector('.hint2').classList.remove('hide');
@@ -111,12 +117,13 @@ function setMinesNegsCount(i, j) { // goes around a mine and increases the mines
 function cellClicked(elCell, i, j) {
     if (!gGame.isOn) return;
     if (gDuringHint) return;
+
     if (gIsHintMode === true) {
-        gDuringHint = true; // this var allows disabling everything else durig the 3 sec when the hint is shown
+        gDuringHint = true; // this var allows disabling everything else durig the 1 sec when the hint is shown
         var temp = [];
         var ii = 0;
 
-        for (var y = i - 1; y < i + 2; y++) {
+        for (var y = i - 1; y < i + 2; y++) { // save a snapshot of the hint area
             for (var x = j - 1; x < j + 2; x++) {
                 if (isOnBoard(y, x)) {
                     temp.push(gBoard[y][x].isShown);
@@ -146,6 +153,8 @@ function cellClicked(elCell, i, j) {
         }, 1000);
     } else { // not asking for hint - regular game
 
+        if (gBoard[i][j].isMarked) return;
+
         if (gFirstClick) {
             putMines(i, j); // put mines anywhere BUT i,j
             gFirstClick = false;
@@ -156,7 +165,7 @@ function cellClicked(elCell, i, j) {
             timer();
         }
 
-        if (gBoard[i][j].minesAroundCount < 1) {
+        if (gBoard[i][j].minesAroundCount < 1) { // if negs==0 - go recursion!
             expandShown(i, j);
         }
 
@@ -179,6 +188,7 @@ function cellClicked(elCell, i, j) {
             }
         }
     }
+    if (checkWin()) doWin();
 }
 
 function showHint(element) {
@@ -221,8 +231,19 @@ function rightClickFunc(element) {
 }
 
 function checkWin() {
+    var shownNonMine = 0;
 
-    if ((gFlaggedMines === gFlags) && (gFlaggedMines == gLevel.MINES)) return true
+    for (var i = 0; i < gLevel.SIZE; i++) {
+        for (var j = 0; j < gLevel.SIZE; j++) {
+            if ((gBoard[i][j].isShown == true) && (gBoard[i][j].isMine === false)) {
+                shownNonMine++;
+            }
+        }
+    }
+
+    var NonMines = (gLevel.SIZE * gLevel.SIZE) - gLevel.MINES;
+    
+    if ((gFlaggedMines == gFlags) && (gFlaggedMines == gLevel.MINES) && (shownNonMine == NonMines)) return true
     else return false
 
 }
@@ -232,7 +253,6 @@ function doWin() {
     gStatusBar.innerText = 'WIN';
     gSmileyIndicator.innerHTML = '😎';
     clearInterval(gTimer);
-
 
 }
 
