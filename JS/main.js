@@ -2,6 +2,14 @@
 
 var gBoard; //  A 2D Matrix containing cell objects: Each has a cell object
 var gFirstClick = true;
+var gIsHintMode = false;
+var gHistory = [];
+var gDuringHint = false;
+var gUsedHint;
+var gStatusBar;
+var gSmileyIndicator;
+var gFlags = 0; // total flags on map - not necessarily correct
+var gFlaggedMines = 0; // total currect flags
 
 //var cell = {  ===>  Example
 //    minesAroundCount: 4,
@@ -23,9 +31,14 @@ var gGame = {
 }
 
 function initGame(size) {
+    gGame.isOn = true;
     gLevel.SIZE = size;
     gBoard = buildBoard(gLevel.SIZE);
     renderBoard(gBoard);
+    gStatusBar = document.querySelector(".statusBar");
+    gSmileyIndicator = document.querySelector(".smiley");
+    gStatusBar.innerHTML = 'Click anywhere on the board...';
+
 }
 
 function buildBoard(size) { // Builds the data structure
@@ -55,7 +68,7 @@ function renderBoard(board) {
             if (gBoard[i][j].isShown == true) {
                 tableStr += ` uncovered`
             }
-            tableStr += `" onclick ="cellClicked(this,${i},${j})">  ${getSymbol(i,j)}  </td>`;
+            tableStr += `" data-i=${i} data-j=${j} onclick ="cellClicked(this,${i},${j})">${getSymbol(i,j)}</td>`;
         }
         tableStr += '</tr>';
     }
@@ -77,14 +90,151 @@ function setMinesNegsCount(i, j) { // goes around a mine and increases the mines
 }
 
 function cellClicked(elCell, i, j) {
+    if (!gGame.isOn) return;
+    if (gDuringHint) return;
+    if (gIsHintMode === true) {
+        gDuringHint = true; // this var allows disabling everything else durig the 3 sec when the hint is shown
+        var temp = [];
+        var ii = 0;
 
-    gBoard[i][j].isShown = true; // update data
-    if (gFirstClick) {
-        putMines(i, j);
-        gFirstClick = false;
+        for (var y = i - 1; y < i + 2; y++) {
+            for (var x = j - 1; x < j + 2; x++) {
+                if (isOnBoard(y, x)) {
+                    temp.push(gBoard[y][x].isShown);
+                    gBoard[y][x].isShown = true;
+                }
+            }
+        }
+
+        renderBoard(gBoard);
+
+        setTimeout(function () {
+
+            for (var y = i - 1; y < i + 2; y++) { // restore the revealed hint cells
+                for (var x = j - 1; x < j + 2; x++) {
+                    if (isOnBoard(y, x)) {
+                        gBoard[y][x].isShown = temp[ii];
+                        ii++;
+                    }
+                }
+            }
+            renderBoard(gBoard);
+            gIsHintMode = false;
+            gDuringHint = false;
+            gUsedHint.classList.add("hide");
+            if (gGame.isOn) gStatusBar.innerHTML = 'Back to the game...';
+
+        }, 3000);
+    } else { // not asking for hint - regular game
+
+
+
+        if (gFirstClick) {
+            putMines(i, j); // put mines anywhere BUT i,j
+            gFirstClick = false;
+            renderBoard(gBoard);
+            var hintEl = document.querySelector('.hintBar');
+            hintEl.classList.remove("hide"); //show the bulbs after the first click
+            gStatusBar.innerHTML = 'Now you can use the hints';
+
+        }
+
+        if (gBoard[i][j].minesAroundCount < 1) {
+            console.log('minesAround: ', gBoard[i][j].minesAroundCount);
+            expandShown(i, j);
+            //renderBoard(gBoard);
+
+        }
+
+        gBoard[i][j].isShown = true; // update data
+
+        renderBoard(gBoard);
+
+
+        revealCell(elCell, i, j);
+        if (gBoard[i][j].isMine) {
+            gGame.isOn = false;
+            gSmileyIndicator.innerHTML = '😵';
+            gStatusBar.innerHTML = 'BOOM!';
+        }
+
+
+
+
+
+    }
+
+}
+
+function showHint(element) {
+    if (!gGame.isOn) return;
+
+    if (gIsHintMode) return;
+    if (gFirstClick) return;
+    element.classList.add('mark');
+    gIsHintMode = true;
+    gUsedHint = element;
+    gStatusBar.innerHTML = 'Click anywhere on the board to get a hint';
+}
+
+function rightClickFunc(element) {
+    if (!gGame.isOn) return;
+    if (element == undefined) {
+        return;
+    }
+
+    var i = +element.toElement.dataset.i;
+    var j = +element.toElement.dataset.j;
+
+    if (gBoard[i][j].isMarked) { // if already has flag
+        gBoard[i][j].isMarked = false; // unflag it
+        gFlags--; // total --
+        if (gBoard[i][j].isMine) {
+            gFlaggedMines--;
+        }
+    } else { // if no flag
+        gBoard[i][j].isMarked = true; //  flag it!
+        gFlags++;
+        if (gBoard[i][j].isMine) {
+            gFlaggedMines++;
+        }
     }
 
 
+    renderBoard(gBoard);
+    if (checkWin()) doWin();
+}
 
-    renderBoard(); // redraw DOM
+function checkWin() {
+
+    if ((gFlaggedMines === gFlags) && (gFlaggedMines == 2)) return true
+    else return false
+
+}
+
+function doWin() {
+    gGame.isOn = false;
+    gStatusBar.innerText = 'WIN';
+    gSmileyIndicator.innerHTML = '😎';
+
+
+}
+
+
+function expandShown(i, j) {
+
+    if (!isOnBoard(i, j)) return;
+    if (gBoard[i][j].isShown === true) return; // prevents endless recursion
+    if (gBoard[i][j].minesAroundCount > 0) {
+        gBoard[i][j].isShown = true;
+        return;
+    }
+
+    gBoard[i][j].isShown = true;
+    //renderBoard(gBoard);
+
+    expandShown(i - 1, j);
+    expandShown(i + 1, j);
+    expandShown(i, j - 1);
+    expandShown(i, j + 1);
 }

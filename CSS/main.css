@@ -1,6 +1,15 @@
+body {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
 table {
     margin-left: auto;
     margin-right: auto;
+}
+
+.test {
+    background-color: darkorange !important;
+    border-radius: 10px;
 }
 
 .cell {
@@ -12,7 +21,7 @@ table {
 }
 
 .uncovered {
-    background-color: rgb(204, 204, 204) !important;
+    background-color: rgb(204, 204, 204);
 }
 
 .board {
@@ -33,13 +42,49 @@ table {
 .hintBar {
     margin-left: auto;
     margin-right: auto;
-    width: 100px;
+    width: 175px;
+    background-color: rgb(253, 179, 89);
+    cursor: pointer;
+    font-size: 15pt;
+    text-align: center;
+
 }
 
 .hint {
-    background-color: darkgray;
-    width: 20px;
+    width: 30px;
     display: inline;
+    padding-right: 2px;
+    padding-left: 2px;
+
 }
 
 .hint1 {}
+
+
+
+.disable-select {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;           /* Non-prefixed version, currently supported by any browser but < IE9 */
+}
+
+.hide {
+    visibility: collapse;
+}
+
+.mark{
+    background-color: deeppink;
+}
+
+.smiley {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 40pt;
+padding: 10px;
+}
