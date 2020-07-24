@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title></title>
-    <script type="text/javascript"> // right Click
+    <title>Mine Sweeper</title>
+    <script type="text/javascript">
+        // right Click
         if (document.addEventListener) {
             document.addEventListener('contextmenu', function (e) {
                 rightClickFunc(e);
@@ -18,31 +19,51 @@
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="CSS/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
 </head>
 
-<body onload="initGame(4)">
-    <div class="container disable-select">
+<body class="disable-select" onload="initGame(4)" style="background-image: url('/IMG/MS_BG.jpg');">
 
-        <div class="timer">0:00</div>
-        <div class="smiley">
-            😃
+    <div class="headline">
+        MINESWEEPER
+    </div>
 
-        </div>
+    <div class="container">
+        <div class="column left">
+            <!-- ********** LEFT **********-->
+            <div class="newGameBar">
+                <div class="new-game new-game-btn new4" onclick="initGame(4)">4X4</div>
+                <div class="new-game new-game-btn new8" onclick="initGame(8)">8X8</div>
+                <div class="new-game new-game-btn new12" onclick="initGame(12)">12X12</div>
+            </div>
+        </div> <!-- left-->
 
-        <div class="board">
-            <!-- will be populated by JS -->
-        </div>
-        <div class="hintBar hide">
-            <div class="hint hint1" onclick="showHint(this)">💡</div>
-            <div class="hint hint2" onclick="showHint(this)">💡</div>
-            <div class="hint hint3" onclick="showHint(this)">💡</div>
-        </div>
-        <div class="statusBar"></div>
+        <div class="column middle ">
+            <!-- ********** CENTER **********-->
 
-        <div class="newGameBar"></div>
-        <div class="new-game new-game-btn new4" onclick="initGame(4)">4X4</div>
-        <div class="new-game new-game-btn new8" onclick="initGame(8)">8X8</div>
-        <div class="new-game new-game-btn new12" onclick="initGame(12)">12X12</div>
+            <div class="smiley">😃</div>
+
+            <div class="board">
+                <!-- BOARD -->
+                <!-- will be populated by JS -->
+            </div>
+
+            <div class="hintBar hide">
+                <div class="hint hint1" onclick="showHint(this)">💡</div>
+                <div class="hint hint2" onclick="showHint(this)">💡</div>
+                <div class="hint hint3" onclick="showHint(this)">💡</div>
+            </div>
+
+            <div class="statusBar"></div>
+        </div> <!-- middle -->
+
+        <div class="column right">
+            <!-- ********** RIGHT **********-->
+
+            <div class="timer">0:00</div>
+            <div class="lives-monitor">Lives: 3</div>
+
+        </div> <!-- right-->
 
     </div>
 

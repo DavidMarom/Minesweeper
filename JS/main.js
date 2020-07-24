@@ -50,6 +50,8 @@ function initGame(size) {
     gFlaggedMines = 0;
     gUsedHint = 0;
     gLevel.LIVES = 3;
+    gIsHintMode = false;
+
     clearInterval(gTimer);
 
     //gOpenCell = 0;
@@ -176,6 +178,7 @@ function cellClicked(elCell, i, j) {
 
         if (gBoard[i][j].isMine) {
             gLevel.LIVES--;
+            document.querySelector('.lives-monitor').innerText=`Lives: ${gLevel.LIVES} `;
             gStatusBar.innerHTML = 'BOOM!  Lives left: ' + gLevel.LIVES;
             elCell.classList.add('mark');
 
