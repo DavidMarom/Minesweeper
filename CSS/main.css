@@ -182,3 +182,23 @@ table {
     font-family: 'Courier New', Courier, monospace;
     margin-top: 10px;
 }
+
+.safe-move {
+    display: block;
+    background-color: #ddeeff;
+    background-color:#00000090;
+    color: #00ff00;
+    padding: 10px;
+    border-radius: 3px;
+    margin-left: 10px;
+    margin-top: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.safe-move:hover{
+    background-color:#00dd00;
+    color: #000000
+    
+}

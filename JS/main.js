@@ -25,7 +25,8 @@ var gEmpty;
 var gLevel = {
     SIZE: 4,
     MINES: 2,
-    LIVES: 3
+    LIVES: 3,
+    SMOVES: 3
 }
 
 var gGame = {
@@ -178,7 +179,7 @@ function cellClicked(elCell, i, j) {
 
         if (gBoard[i][j].isMine) {
             gLevel.LIVES--;
-            document.querySelector('.lives-monitor').innerText=`Lives: ${gLevel.LIVES} `;
+            document.querySelector('.lives-monitor').innerText = `Lives: ${gLevel.LIVES} `;
             gStatusBar.innerHTML = 'BOOM!  Lives left: ' + gLevel.LIVES;
             elCell.classList.add('mark');
 
@@ -245,7 +246,7 @@ function checkWin() {
     }
 
     var NonMines = (gLevel.SIZE * gLevel.SIZE) - gLevel.MINES;
-    
+
     if ((gFlaggedMines == gFlags) && (gFlaggedMines == gLevel.MINES) && (shownNonMine == NonMines)) return true
     else return false
 
@@ -253,7 +254,7 @@ function checkWin() {
 
 function doWin() {
     gGame.isOn = false;
-    gStatusBar.innerText = 'WIN';
+    gStatusBar.innerText = 'You made it, soldier!';
     gSmileyIndicator.innerHTML = '😎';
     clearInterval(gTimer);
 
@@ -275,4 +276,52 @@ function expandShown(i, j) {
     expandShown(i + 1, j);
     expandShown(i, j - 1);
     expandShown(i, j + 1);
+}
+
+function safeMove() {
+
+    
+    if (gLevel.SMOVES<1) return;
+    
+    // create an array of arrays of relevant cells
+    var bank = [];
+    
+    for (var i = 0; i < gLevel.SIZE; i++) {
+        for (var j = 0; j < gLevel.SIZE; j++) {
+            if ((!gBoard[i][j].isMarked) && (!gBoard[i][j].isShown) && (!gBoard[i][j].isMine)) {
+                bank.push(gBoard[i][j]);
+            }
+        }
+    }
+    
+    //make a random number betwen 0 and the array length
+    var rand = Math.floor(Math.random()*bank.length);
+
+
+    // mark the cell 
+    //var cellEl = document.querySelector()
+    
+    gLevel.SMOVES--;
+document.querySelector('.safe-move').innerText=`Safe Move (${gLevel.SMOVES} left)`;
+
+    // var safe = 0;
+    // var j = Math.floor(Math.random() * gLevel.SIZE);
+    // var i = Math.floor(Math.random() * gLevel.SIZE);
+
+    // while ((gBoard[i][j].isMarked) || (gBoard[i][j].isShown) || (gBoard[i][j].isMine)) {
+    //     var randj = Math.floor(Math.random() * gLevel.SIZE);
+    //     var randi = Math.floor(Math.random() * gLevel.SIZE);
+    //     if (safe > 100) {
+    //         return;
+    //     }
+
+    //     console.log(safe);
+    //     safe++;
+    // }
+
+    // gBoard[i][j].isShown = true;
+    // renderBoard(gBoard);
+
+    // console.log(safe);
+
 }
