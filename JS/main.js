@@ -52,7 +52,8 @@ function initGame(size) {
     gUsedHint = 0;
     gLevel.LIVES = 3;
     gIsHintMode = false;
-
+    gLevel.SMOVES = 3;
+    document.querySelector('.safe-move').innerText = `Safe Move (${gLevel.SMOVES} left)`;
     clearInterval(gTimer);
 
     //gOpenCell = 0;
@@ -92,7 +93,7 @@ function renderBoard(board) {
     for (var i = 0; i < size; i++) {
         tableStr += '<tr>';
         for (var j = 0; j < size; j++) {
-            tableStr += `<td class="cell`;
+            tableStr += `<td class="cell c${i}${j}`;
             if (gBoard[i][j].isShown == true) {
                 tableStr += ` uncovered`
             }
@@ -280,48 +281,47 @@ function expandShown(i, j) {
 
 function safeMove() {
 
-    
-    if (gLevel.SMOVES<1) return;
-    
+    if (gFirstClick) {
+        document.querySelector('.statusBar').innerText = 'This is only available after the first move';
+        return;
+    }
+
+    if (gLevel.SMOVES < 1) return;
+
     // create an array of arrays of relevant cells
     var bank = [];
-    
+
     for (var i = 0; i < gLevel.SIZE; i++) {
         for (var j = 0; j < gLevel.SIZE; j++) {
             if ((!gBoard[i][j].isMarked) && (!gBoard[i][j].isShown) && (!gBoard[i][j].isMine)) {
-                bank.push(gBoard[i][j]);
+                bank.push([i, j]);
             }
         }
     }
-    
+
+    if (bank.length === 0) {
+        document.querySelector('.statusBar').innerText = 'There are no more safe moves...';
+        return;
+    }
+
     //make a random number betwen 0 and the array length
-    var rand = Math.floor(Math.random()*bank.length);
+    var rand = Math.floor(Math.random() * bank.length);
 
 
     // mark the cell 
-    //var cellEl = document.querySelector()
-    
+    var y = bank[rand][0];
+    var x = bank[rand][1];
+
+
+
+    var tempString = "c" + y + x;
+
+    var cellEl = document.querySelector(`.${tempString}`);
+    cellEl.classList.add("mark-safe");
+
     gLevel.SMOVES--;
-document.querySelector('.safe-move').innerText=`Safe Move (${gLevel.SMOVES} left)`;
+    document.querySelector('.safe-move').innerText = `Safe Move (${gLevel.SMOVES} left)`;
 
-    // var safe = 0;
-    // var j = Math.floor(Math.random() * gLevel.SIZE);
-    // var i = Math.floor(Math.random() * gLevel.SIZE);
 
-    // while ((gBoard[i][j].isMarked) || (gBoard[i][j].isShown) || (gBoard[i][j].isMine)) {
-    //     var randj = Math.floor(Math.random() * gLevel.SIZE);
-    //     var randi = Math.floor(Math.random() * gLevel.SIZE);
-    //     if (safe > 100) {
-    //         return;
-    //     }
-
-    //     console.log(safe);
-    //     safe++;
-    // }
-
-    // gBoard[i][j].isShown = true;
-    // renderBoard(gBoard);
-
-    // console.log(safe);
 
 }
