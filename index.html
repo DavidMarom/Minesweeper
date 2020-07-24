@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
 </head>
 
-<body class="disable-select" onload="initGame(4)" style="background-image: url('/IMG/MS_BG.jpg');">
+<body class="disable-select" onload="initGame(4)" style="background-image: url('../IMG/MS_BG.jpg');">
 
     <div class="headline">
         MINESWEEPER
@@ -36,6 +36,9 @@
                 <div class="new-game new-game-btn new8" onclick="initGame(8)">8X8</div>
                 <div class="new-game new-game-btn new12" onclick="initGame(12)">12X12</div>
             </div>
+
+            <div class="safe-move" onclick="safeMove()">Safe Move (3 left)</div>
+
         </div> <!-- left-->
 
         <div class="column middle ">
