@@ -110,7 +110,7 @@ table {
 }
 
 .mark {
-    background-color:#FF0000;
+    background-color:#FF0000 !important;
 }
 
 .mark-safe {
@@ -202,6 +202,26 @@ table {
 }
 
 .safe-move:hover{
+    background-color:#00dd00;
+    color: #000000
+    
+}
+
+.undo {
+    display: block;
+    background-color: #ddeeff;
+    background-color:#00000090;
+    color: #00ff00;
+    padding: 10px;
+    border-radius: 3px;
+    margin-left: 10px;
+    margin-top: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.undo:hover{
     background-color:#00dd00;
     color: #000000
     

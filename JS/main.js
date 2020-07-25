@@ -13,6 +13,7 @@ var gFlaggedMines = 0; // total currect flags
 var gTimer;
 var gOpenCell;
 var gEmpty;
+var gLivesHistory;
 
 
 //var cell = {  ===>  Example
@@ -55,10 +56,8 @@ function initGame(size) {
     gLevel.SMOVES = 3;
     document.querySelector('.safe-move').innerText = `Safe Move (${gLevel.SMOVES} left)`;
     clearInterval(gTimer);
+    gHistory = [];
 
-    //gOpenCell = 0;
-    //gEmpty = (gLevel.SIZE*gLevel.SIZE) - gLevel.MINES  ;
-    //console.log('gEmpty: ', gEmpty);
     document.querySelector('.hintBar').classList.add("hide");
 
     document.querySelector('.hint1').classList.remove('hide');
@@ -119,10 +118,13 @@ function setMinesNegsCount(i, j) { // goes around a mine and increases the mines
 }
 
 function cellClicked(elCell, i, j) {
+    saveBoard();
+    gLivesHistory = gLevel.LIVES;
+    console.log('board saved');
     if (!gGame.isOn) return;
     if (gDuringHint) return;
 
-    if (gIsHintMode === true) {
+    if (gIsHintMode === true) { //  ***  HINT MODE  ***
         gDuringHint = true; // this var allows disabling everything else durig the 1 sec when the hint is shown
         var temp = [];
         var ii = 0;
@@ -155,7 +157,7 @@ function cellClicked(elCell, i, j) {
             if (gGame.isOn) gStatusBar.innerHTML = 'Back to the game...';
 
         }, 1000);
-    } else { // not asking for hint - regular game
+    } else { // ***  REGULAR GAME - NOT HINT MODE  ***
 
         if (gBoard[i][j].isMarked) return;
 
@@ -208,6 +210,8 @@ function showHint(element) {
 }
 
 function rightClickFunc(element) {
+    saveBoard();
+
     if (!gGame.isOn) return;
     if (element == undefined) {
         return;
@@ -324,4 +328,36 @@ function safeMove() {
 
 
 
+}
+
+function saveBoard() {
+
+    var newBoard = buildBoard(gLevel.SIZE);
+    var cell;
+
+    for (var i = 0; i < gLevel.SIZE; i++) {
+        //bewBoard.push([]);
+        for (var j = 0; j < gLevel.SIZE; j++) {
+            cell = {
+                minesAroundCount: gBoard[i][j].minesAroundCount,
+                isShown: gBoard[i][j].isShown,
+                isMine: gBoard[i][j].isMine,
+                isMarked: gBoard[i][j].isMarked
+            }
+            newBoard[i][j] = cell;
+        }
+    }
+    gHistory = newBoard;
+
+}
+
+function undo() {
+
+    gBoard = gHistory.map(function (arr) {
+        return arr.slice();
+    });
+    gLevel.LIVES = gLivesHistory;
+    document.querySelector('.lives-monitor').innerText = `Lives: ${gLevel.LIVES} `;
+
+    renderBoard(gBoard);
 }
