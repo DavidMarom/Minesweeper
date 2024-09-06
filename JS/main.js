@@ -211,14 +211,14 @@ function showHint(element) {
 
 function rightClickFunc(element) {
     saveBoard();
-
+    console.log(element.target);
     if (!gGame.isOn) return;
     if (element == undefined) {
         return;
     }
 
-    var i = +element.toElement.dataset.i;
-    var j = +element.toElement.dataset.j;
+    var i = +element.target.dataset.i;
+    var j = +element.target.dataset.j;
 
     if (gBoard[i][j].isMarked) { // if already has flag
         gBoard[i][j].isMarked = false; // unflag it
